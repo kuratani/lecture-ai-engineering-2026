@@ -10,6 +10,13 @@ import os
 DEFAULT_MODEL = "gemini-3.5-flash-lite"
 MODEL = os.getenv("AIE_MODEL", DEFAULT_MODEL)
 
+# temperature: 回答のばらつき具合。Gemini では 0.0〜2.0 の範囲。
+#   低いほど毎回ほぼ同じ回答（0.0 でも完全に同じとは限らない）、高いほどばらつく。
+#   環境変数 AIE_TEMPERATURE を設定すると指定できる。未設定ならモデルの既定値を使う（None）。
+#   例: export AIE_TEMPERATURE=0.0
+_raw_temperature = os.getenv("AIE_TEMPERATURE")
+TEMPERATURE = float(_raw_temperature) if _raw_temperature else None
+
 
 def api_error_message(status: int, detail: str = "") -> str:
     """HTTPステータスコードを、受講生向けの日本語の説明にする（ask.py と agent.py で共用）。"""
