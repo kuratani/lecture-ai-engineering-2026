@@ -12,6 +12,7 @@
 """
 
 import argparse
+import time
 
 from google import genai
 from google.genai import errors
@@ -25,11 +26,15 @@ DEFAULT_QUESTION = "AIE2026の講座の宿題にある「3レベル」とは何�
 
 def ask(chat: Chat, question: str) -> str:
     """chat に質問を送る。chat が過去のやり取りを保持するので、続けて質問できる。"""
+    start = time.perf_counter()
     response = chat.send_message(question)
+    elapsed = time.perf_counter() - start
 
+    message = f"[計測] 応答時間: {elapsed:.2f}秒"
     if response.usage_metadata is not None:
         usage = response.usage_metadata
-        print(f"[トークン] 入力: {usage.prompt_token_count}, 出力: {usage.candidates_token_count}\n")
+        message += f", 入力: {usage.prompt_token_count}, 出力: {usage.candidates_token_count}"
+    print(message + "\n")
 
     return response.text
 
