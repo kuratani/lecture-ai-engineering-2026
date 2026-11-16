@@ -1,0 +1,17 @@
+$ env AIE_RAG_NEIGHBORS=1 uv run python -m app.agent --trace 第2回の説明では、LoRAは何を固定し何を学習しますか？ QLoRAは何を加えますか？
+[model] gemini-3.5-flash-lite
+講義資料によると、LoRAおよびQLoRAの仕組みについて以下のように説明されています。
+
+* **LoRA（Low-Rank Adaptation）**
+  * **何を固定するか：** 元の重み（本体）は固定し、学習しません（第2回・PDF p.52）。
+  * **何を学習するか：** 細長い2つの小さな行列の積（低ランクの差分）である追加の行列（付箋にあたる部分）だけを学習します（第2回・PDF p.51, 52）。
+
+* **QLoRA（Quantized LoRA）**
+  * **何を加えるか：** LoRAの手法に加えて、元の重みを **4bit** に圧縮（数値を粗く保存）するという処理を加えます（第2回・PDF p.51, 52）。これにより、本体のメモリ使用量を約1/4に抑えて、大きなモデルでもGPU1台で調整できるようにします（第2回・PDF p.52）。
+
+--- trace ---
+[tool call]   search_materials({'query': 'LoRA QLoRA 固定 学習'})
+[tool return] search_materials -> 11件: 第2回p.52, 第2回p.53+, 第2回p.51, 第2回p.50+, 第2回p.60, 第2回p.59+, 第2回p.61, 第2回p.62+, 第2回p.47, 第2回p.46+, 第2回p.48+（+は前後ページ）
+[time] 回答完了まで 2.90 秒（検索・埋め込みを含む）
+[usage] 入力 5,406 tokens / 出力 241 tokens / モデル応答 2 回
+[cost] 生成APIの推定コスト: $0.002224 USD（埋め込み・索引構築分は含まない）
